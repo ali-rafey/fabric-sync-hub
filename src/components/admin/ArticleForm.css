@@ -1,0 +1,28 @@
+/* Article Form Modal Styles */
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 100; padding: 2rem; }
+.modal-content { background: white; border-radius: 0.75rem; width: 100%; max-width: 40rem; max-height: 90vh; overflow-y: auto; box-shadow: 0 10px 40px -10px rgba(0,0,0,0.3); }
+.modal-header { padding: 1.5rem; border-bottom: 1px solid hsl(35,15%,88%); display: flex; justify-content: space-between; align-items: center; }
+.modal-title { font-family: 'DM Serif Display', serif; font-size: 1.5rem; color: hsl(30,10%,12%); }
+.modal-close { padding: 0.5rem; background: transparent; border: none; border-radius: 0.375rem; cursor: pointer; }
+.modal-close:hover { background: hsl(35,12%,92%); }
+.modal-close svg { width: 1.25rem; height: 1.25rem; color: hsl(30,8%,45%); }
+.modal-body { padding: 1.5rem; }
+.modal-footer { padding: 1.5rem; border-top: 1px solid hsl(35,15%,88%); display: flex; justify-content: flex-end; gap: 0.75rem; }
+.article-form { display: flex; flex-direction: column; gap: 1.5rem; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+@media (max-width: 640px) { .form-row { grid-template-columns: 1fr; } }
+.form-group.full-width { grid-column: 1 / -1; }
+.form-select { padding: 0.75rem 1rem; border: 1px solid hsl(0,0%,88%); border-radius: 0.5rem; font-size: 1rem; background: white; color: hsl(0,0%,10%); }
+.form-select:focus { outline: none; border-color: hsl(0,0%,15%); box-shadow: 0 0 0 3px hsl(0,0%,15%,0.1); }
+.form-textarea { padding: 0.75rem 1rem; border: 1px solid hsl(0,0%,88%); border-radius: 0.5rem; font-size: 1rem; min-height: 5rem; resize: vertical; font-family: inherit; }
+.form-textarea:focus { outline: none; border-color: hsl(0,0%,15%); box-shadow: 0 0 0 3px hsl(0,0%,15%,0.1); }
+.image-upload { border: 2px dashed hsl(35,15%,88%); border-radius: 0.5rem; padding: 2rem; text-align: center; cursor: pointer; transition: border-color 0.2s; }
+.image-upload:hover { border-color: hsl(30,8%,45%); }
+.image-upload svg { width: 2rem; height: 2rem; color: hsl(30,8%,45%); margin: 0 auto 0.5rem; }
+.image-upload p { color: hsl(30,8%,45%); font-size: 0.875rem; }
+.image-preview { position: relative; border-radius: 0.5rem; overflow: hidden; }
+.image-preview img { width: 100%; max-height: 16rem; object-fit: cover; }
+.image-preview-remove { position: absolute; top: 0.5rem; right: 0.5rem; background: hsl(0,0%,0%,0.5); color: white; border: none; border-radius: 50%; width: 2rem; height: 2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+.image-preview-remove svg { width: 1rem; height: 1rem; }
+.btn-cancel-modal { padding: 0.75rem 1.25rem; background: hsl(35,12%,92%); color: hsl(30,10%,12%); border: none; border-radius: 0.375rem; cursor: pointer; font-weight: 500; }
+.btn-cancel-modal:hover { background: hsl(35,12%,85%); }

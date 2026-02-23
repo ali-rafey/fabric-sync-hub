@@ -1,14 +1,45 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { useNavigate } from 'react-router-dom';
+import { ArrowRight, Sparkles } from 'lucide-react';
+import './Index.css';
 
-const Index = () => {
+export default function Index() {
+  const navigate = useNavigate();
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
+    <div className="index-page">
+      <main className="hero-section">
+        <div className="hero-background" />
+        <div className="hero-content">
+          <div className="hero-badge-wrap">
+            <Sparkles style={{ width: '1rem', height: '1rem', color: 'hsl(15, 65%, 50%)' }} />
+            <span className="hero-badge">Premium B2B Textile Manufacturing</span>
+          </div>
+
+          <h1 className="hero-title">
+            Textile<br />
+            <span style={{ color: 'hsl(15, 65%, 50%)' }}>Fabrics</span>
+          </h1>
+
+          <p className="hero-description">
+            Three generations of excellence in fabric manufacturing.
+            Discover our collection of premium textiles, crafted for the world's finest garment makers.
+          </p>
+
+          <div className="hero-buttons">
+            <button onClick={() => navigate('/shop')} className="hero-cta">
+              Explore Collection
+              <ArrowRight />
+            </button>
+            <button onClick={() => navigate('/about')} className="hero-cta-secondary">
+              Our Story
+            </button>
+          </div>
+        </div>
+      </main>
+
+      <footer className="hero-footer">
+        <p>© 2024 Textile Fabrics · Premium Manufacturing Since 1962</p>
+      </footer>
     </div>
   );
-};
-
-export default Index;
+}

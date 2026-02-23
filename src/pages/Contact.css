@@ -1,0 +1,248 @@
+/* Contact Page Styles */
+
+.contact-page {
+  animation: fadeIn 0.5s ease-out;
+}
+
+.contact-header {
+  padding: 4rem 1.5rem;
+  background: hsl(35, 12%, 92%, 0.3);
+}
+
+.contact-header-inner {
+  max-width: 56rem;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.contact-label {
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: hsl(30, 8%, 45%);
+}
+
+.contact-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(2rem, 5vw, 3rem);
+  margin-top: 1rem;
+  margin-bottom: 1.5rem;
+  color: hsl(30, 10%, 12%);
+}
+
+.contact-description {
+  font-size: 1.125rem;
+  color: hsl(30, 8%, 45%);
+  max-width: 42rem;
+  margin: 0 auto;
+}
+
+/* Contact Grid */
+.contact-grid {
+  padding: 3rem 1.5rem;
+}
+
+.contact-grid-inner {
+  max-width: 64rem;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+}
+
+/* Contact Info */
+.contact-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.contact-info-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.875rem;
+  color: hsl(30, 10%, 12%);
+}
+
+.contact-info-items {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.contact-info-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.contact-icon-wrap {
+  padding: 0.75rem;
+  background: hsl(35, 12%, 92%);
+  border-radius: 0.5rem;
+  flex-shrink: 0;
+}
+
+.contact-icon-wrap svg {
+  width: 1.25rem;
+  height: 1.25rem;
+  color: hsl(30, 8%, 18%);
+}
+
+.contact-info-label {
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+}
+
+.contact-info-text {
+  color: hsl(30, 8%, 45%);
+}
+
+.contact-info-subtext {
+  font-size: 0.875rem;
+  color: hsl(30, 8%, 55%);
+}
+
+/* Consultation Card */
+.consultation-card {
+  padding: 2rem;
+  background: hsl(30, 8%, 10%);
+  border-radius: 0.75rem;
+  color: hsl(40, 20%, 98%);
+}
+
+.consultation-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.consultation-header svg {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.consultation-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.5rem;
+}
+
+.consultation-text {
+  color: hsl(40, 20%, 98%, 0.7);
+  margin-bottom: 1.5rem;
+  line-height: 1.7;
+}
+
+.consultation-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 2rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.consultation-list li {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: hsl(40, 20%, 98%, 0.8);
+}
+
+.consultation-bullet {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: hsl(15, 65%, 50%);
+  flex-shrink: 0;
+}
+
+.consultation-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.875rem 1.5rem;
+  background: hsl(40, 20%, 98%);
+  color: hsl(30, 8%, 10%);
+  border: none;
+  border-radius: 0.375rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  width: 100%;
+  justify-content: center;
+}
+
+.consultation-btn:hover {
+  background: hsl(40, 20%, 90%);
+}
+
+.consultation-btn svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+/* Business Hours */
+.business-hours {
+  padding: 3rem 1.5rem;
+  background: hsl(35, 12%, 92%, 0.3);
+}
+
+.business-hours-inner {
+  max-width: 56rem;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.business-hours-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.875rem;
+  margin-bottom: 2rem;
+  color: hsl(30, 10%, 12%);
+}
+
+.business-hours-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+}
+
+.hours-item {
+  padding: 1.5rem;
+  background: hsl(0, 0%, 100%);
+  border-radius: 0.5rem;
+  border: 1px solid hsl(35, 15%, 88%);
+}
+
+.hours-day {
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  color: hsl(30, 10%, 12%);
+}
+
+.hours-time {
+  color: hsl(30, 8%, 45%);
+  font-size: 0.875rem;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .contact-grid-inner {
+    grid-template-columns: 1fr;
+  }
+
+  .business-hours-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .business-hours-grid {
+    grid-template-columns: 1fr;
+  }
+}
