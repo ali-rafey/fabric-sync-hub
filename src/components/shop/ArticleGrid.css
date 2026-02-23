@@ -1,0 +1,152 @@
+/* Article Grid Styles */
+
+.article-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+}
+
+/* Loading State */
+.article-grid-loading {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+}
+
+.article-skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.skeleton-image {
+  aspect-ratio: 3/4;
+  background: hsl(35, 12%, 92%);
+  border-radius: 0.5rem;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.skeleton-title {
+  height: 1.25rem;
+  width: 75%;
+  background: hsl(35, 12%, 92%);
+  border-radius: 0.25rem;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.skeleton-price {
+  height: 1rem;
+  width: 50%;
+  background: hsl(35, 12%, 92%);
+  border-radius: 0.25rem;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* Empty State */
+.article-grid-empty {
+  text-align: center;
+  padding: 5rem 0;
+}
+
+.article-grid-empty p {
+  color: hsl(30, 8%, 45%);
+}
+
+/* Article Card */
+.article-card {
+  text-align: left;
+  background: none;
+  border: none;
+  cursor: pointer;
+  animation: fadeIn 0.5s ease-out both;
+}
+
+.article-image-wrap {
+  aspect-ratio: 3/4;
+  overflow: hidden;
+  border-radius: 0.5rem;
+  background: hsl(35, 12%, 92%);
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.article-badge {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  z-index: 10;
+  padding: 0.25rem 0.5rem;
+  background: hsl(30, 8%, 18%, 0.8);
+  color: hsl(40, 20%, 98%);
+  font-size: 0.75rem;
+  border-radius: 0.25rem;
+}
+
+.article-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.article-card:hover .article-image {
+  transform: scale(1.05);
+}
+
+.article-placeholder {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, hsl(35, 12%, 85%, 0.3), hsl(40, 30%, 96%));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.article-placeholder span {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(2rem, 5vw, 4rem);
+  color: hsl(30, 8%, 45%, 0.3);
+}
+
+.article-name {
+  font-weight: 500;
+  color: hsl(30, 10%, 12%);
+  margin-bottom: 0.25rem;
+}
+
+.article-price {
+  font-size: 0.875rem;
+  color: hsl(30, 8%, 45%);
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .article-grid,
+  .article-grid-loading {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .article-grid,
+  .article-grid-loading {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .article-grid,
+  .article-grid-loading {
+    grid-template-columns: 1fr;
+  }
+}

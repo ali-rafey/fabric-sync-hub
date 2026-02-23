@@ -1,0 +1,189 @@
+/* About Page Styles */
+
+.about-page {
+  animation: fadeIn 0.5s ease-out;
+}
+
+.about-hero {
+  position: relative;
+  height: 60vh;
+  min-height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, hsl(30, 8%, 18%), hsl(30, 8%, 18%));
+  overflow: hidden;
+}
+
+.about-hero-bg {
+  position: absolute;
+  inset: 0;
+  opacity: 0.2;
+}
+
+.about-hero-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 30% 40%, hsl(40, 30%, 96%) 0%, transparent 50%);
+}
+
+.about-hero-content {
+  position: relative;
+  text-align: center;
+  padding: 0 1.5rem;
+}
+
+.about-hero-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(2rem, 6vw, 4.5rem);
+  color: hsl(40, 20%, 98%);
+  margin-bottom: 1.5rem;
+}
+
+.about-hero-subtitle {
+  font-size: clamp(1rem, 3vw, 1.25rem);
+  color: hsl(40, 20%, 98%, 0.8);
+  font-weight: 300;
+}
+
+/* Story Section */
+.about-story {
+  padding: 4rem 1.5rem;
+  max-width: 56rem;
+  margin: 0 auto;
+}
+
+.about-story-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+}
+
+.story-block {
+  animation: slideIn 0.6s ease-out;
+}
+
+.story-label {
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: hsl(30, 8%, 45%);
+}
+
+.story-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  margin-top: 1rem;
+  margin-bottom: 1.5rem;
+  color: hsl(30, 10%, 12%);
+}
+
+.story-text {
+  font-size: 1.125rem;
+  color: hsl(30, 8%, 45%);
+  line-height: 1.75;
+}
+
+/* Stats Grid */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}
+
+.stat-card {
+  text-align: center;
+  padding: 2rem;
+  background: hsl(35, 12%, 92%, 0.5);
+  border-radius: 0.5rem;
+}
+
+.stat-number {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(2rem, 5vw, 3rem);
+  color: hsl(30, 8%, 18%);
+}
+
+.stat-label {
+  font-size: 0.875rem;
+  color: hsl(30, 8%, 45%);
+  margin-top: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+/* Process Grid */
+.process-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+}
+
+.process-card {
+  padding: 1.5rem;
+  border: 1px solid hsl(35, 15%, 88%);
+  border-radius: 0.5rem;
+  transition: box-shadow 0.3s ease;
+}
+
+.process-card:hover {
+  box-shadow: 0 4px 25px -5px hsl(30, 8%, 18%, 0.1);
+}
+
+.process-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+  color: hsl(30, 10%, 12%);
+}
+
+.process-desc {
+  color: hsl(30, 8%, 45%);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(-20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .about-hero {
+    height: 50vh;
+    min-height: 300px;
+  }
+
+  .about-story {
+    padding: 3rem 1rem;
+    gap: 3rem;
+  }
+
+  .story-text {
+    font-size: 1rem;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .stat-card {
+    padding: 1.5rem;
+  }
+
+  .process-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .about-story {
+    padding: 2rem 1rem;
+  }
+}
