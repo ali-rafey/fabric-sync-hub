@@ -1,11 +1,13 @@
+import { useState } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { SplashScreen } from "@/components/SplashScreen";
 import Index from "./pages/Index";
 import About from "./pages/About";
-import Shop from "./pages/Shop";
+import Explore from "./pages/Explore";
 import Contact from "./pages/Contact";
 import ArticleDetail from "./pages/ArticleDetail";
 import AdminLogin from "./pages/admin/AdminLogin";
@@ -17,28 +19,37 @@ import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/shop" element={<Shop />} />
-          <Route path="/shop/article/:id" element={<ArticleDetail />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/123admin" element={<AdminLogin />} />
-          <Route path="/123admin/dashboard" element={<AdminDashboard />} />
-          <Route path="/123admin/articles" element={<AdminArticles />} />
-          <Route path="/123admin/categories" element={<AdminCategories />} />
-          <Route path="/123admin/specs" element={<AdminSpecs />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+const App = () => {
+  const [splashDone, setSplashDone] = useState(false);
+
+  if (!splashDone) {
+    return <SplashScreen onComplete={() => setSplashDone(true)} />;
+  }
+
+  return (
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/explore" element={<Explore />} />
+            <Route path="/explore/:category" element={<Explore />} />
+            <Route path="/article/:id" element={<ArticleDetail />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/123admin" element={<AdminLogin />} />
+            <Route path="/123admin/dashboard" element={<AdminDashboard />} />
+            <Route path="/123admin/articles" element={<AdminArticles />} />
+            <Route path="/123admin/categories" element={<AdminCategories />} />
+            <Route path="/123admin/specs" element={<AdminSpecs />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </TooltipProvider>
+    </QueryClientProvider>
+  );
+};
 
 export default App;

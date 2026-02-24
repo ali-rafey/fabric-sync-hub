@@ -1,0 +1,136 @@
+/* Navbar */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background: hsl(0, 0%, 100%, 0.95);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid hsl(var(--border));
+}
+
+.navbar-inner {
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: 0 2rem;
+  height: 4.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.navbar-brand {
+  text-decoration: none;
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+.navbar-brand-text {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  color: hsl(var(--foreground));
+  letter-spacing: 0.15em;
+}
+
+.navbar-brand-sub {
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  color: hsl(var(--muted-foreground));
+  text-transform: uppercase;
+}
+
+.navbar-links {
+  list-style: none;
+  display: flex;
+  gap: 2.5rem;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar-link {
+  text-decoration: none;
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  color: hsl(var(--muted-foreground));
+  transition: color 0.2s;
+  text-transform: uppercase;
+}
+
+.navbar-link:hover,
+.navbar-link.active {
+  color: hsl(var(--foreground));
+}
+
+.navbar-link.active {
+  border-bottom: 2px solid hsl(var(--foreground));
+  padding-bottom: 2px;
+}
+
+.navbar-mobile-toggle {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: hsl(var(--foreground));
+}
+
+.navbar-mobile-toggle svg {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.navbar-mobile-overlay {
+  position: fixed;
+  inset: 0;
+  background: hsl(0, 0%, 0%, 0.4);
+  z-index: 98;
+}
+
+.navbar-mobile-menu {
+  position: fixed;
+  top: 4.5rem;
+  left: 0;
+  right: 0;
+  background: hsl(var(--background));
+  border-bottom: 1px solid hsl(var(--border));
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 0;
+  z-index: 99;
+  animation: slideDown 0.2s ease-out;
+}
+
+.navbar-mobile-link {
+  padding: 1rem 2rem;
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 500;
+  color: hsl(var(--muted-foreground));
+  transition: all 0.2s;
+}
+
+.navbar-mobile-link:hover,
+.navbar-mobile-link.active {
+  color: hsl(var(--foreground));
+  background: hsl(var(--accent));
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-0.5rem); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 768px) {
+  .navbar-links {
+    display: none;
+  }
+  .navbar-mobile-toggle {
+    display: flex;
+  }
+  .navbar-inner {
+    padding: 0 1rem;
+  }
+}
