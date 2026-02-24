@@ -1,79 +1,24 @@
-/* Main Layout Styles */
-
+/* Main Layout - Navbar based */
 .main-layout {
   min-height: 100vh;
-  background: hsl(0, 0%, 100%);
+  display: flex;
+  flex-direction: column;
+  background: hsl(var(--background));
 }
 
 .main-content {
-  margin-left: 16rem;
-  min-height: 100vh;
+  flex: 1;
+  padding-top: 4.5rem;
 }
 
-/* Mobile Header */
-.mobile-header {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4rem;
-  background: hsl(0, 0%, 8%);
-  z-index: 40;
-  align-items: center;
-  padding: 0 1rem;
-  gap: 1rem;
+.site-footer {
+  padding: 2rem;
+  text-align: center;
+  border-top: 1px solid hsl(var(--border));
+  background: hsl(var(--secondary));
 }
 
-.mobile-menu-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 2.5rem;
-  height: 2.5rem;
-  background: transparent;
-  border: none;
-  border-radius: 0.5rem;
-  cursor: pointer;
-  color: hsl(0, 0%, 100%);
-}
-
-.mobile-menu-btn:hover {
-  background: hsl(0, 0%, 15%);
-}
-
-.mobile-menu-btn svg {
-  width: 1.5rem;
-  height: 1.5rem;
-}
-
-.mobile-brand {
-  font-family: 'DM Serif Display', serif;
-  font-size: 1.25rem;
-  color: hsl(0, 0%, 100%);
-}
-
-/* Mobile Overlay */
-.mobile-overlay {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: hsl(0, 0%, 0%, 0.5);
-  z-index: 45;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  .main-content {
-    margin-left: 0;
-    padding-top: 4rem;
-  }
-
-  .mobile-header {
-    display: flex;
-  }
-
-  .mobile-overlay {
-    display: block;
-  }
+.site-footer p {
+  font-size: 0.8rem;
+  color: hsl(var(--muted-foreground));
 }

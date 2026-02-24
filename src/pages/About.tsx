@@ -5,7 +5,7 @@ export default function About() {
   return (
     <MainLayout>
       <div className="about-page">
-        {/* Hero Section */}
+        {/* Hero */}
         <section className="about-hero">
           <div className="about-hero-bg" />
           <div className="about-hero-content">
@@ -16,7 +16,7 @@ export default function About() {
           </div>
         </section>
 
-        {/* Story Section */}
+        {/* Story */}
         <section className="about-story">
           <div className="about-story-inner">
             <div className="story-block">
@@ -35,7 +35,7 @@ export default function About() {
                 { number: '500+', label: 'Fabric Varieties' },
                 { number: '40+', label: 'Countries Served' },
               ].map((stat) => (
-                <div key={stat.label} className="stat-card">
+                <div key={stat.label} className="stat-card-about">
                   <span className="stat-number">{stat.number}</span>
                   <p className="stat-label">{stat.label}</p>
                 </div>
@@ -46,9 +46,8 @@ export default function About() {
               <span className="story-label">Our Process</span>
               <h2 className="story-title">From Fiber to Fabric</h2>
               <p className="story-text" style={{ marginBottom: '2rem' }}>
-                Every bolt of fabric that leaves our facility undergoes rigorous quality testing. Our in-house
-                laboratory conducts comprehensive analyses including GSM verification, tear and tensile strength
-                testing, and colorfastness evaluation to ensure each product meets the highest industry standards.
+                Every bolt of fabric undergoes rigorous quality testing. Our in-house lab conducts
+                comprehensive GSM verification, tear and tensile strength testing, and colorfastness evaluation.
               </p>
 
               <div className="process-grid">
