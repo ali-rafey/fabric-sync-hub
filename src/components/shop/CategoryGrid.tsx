@@ -42,7 +42,7 @@ export function CategoryGrid({ onCategorySelect }: CategoryGridProps) {
         return (
           <button
             key={category.id}
-            onClick={() => onCategorySelect(category.name)}
+            onClick={() => onCategorySelect(category.name.toLowerCase())}
             className="category-card"
           >
             <div className="category-image-wrap">
