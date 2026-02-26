@@ -1,39 +1,94 @@
-import { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { Menu, X } from 'lucide-react';
+import { useState, useRef, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Menu, X, ChevronDown } from 'lucide-react';
 import './Navbar.css';
 
-// Navigation links — "Home" removed, logo serves as home link
-const navLinks = [
-  { path: '/explore', label: 'Explore' },
-  { path: '/about', label: 'About Us' },
-  { path: '/contact', label: 'Contact Us' },
+// Dropdown menu structure — left side navigation
+const navMenus = [
+  {
+    label: 'About Us',
+    items: [
+      { label: 'Our Story', path: '/about' },
+      { label: 'Our Process', path: '/about' },
+      { label: 'Our Team', path: '/about' },
+    ],
+  },
+  {
+    label: 'Explore',
+    items: [
+      { label: 'All Categories', path: '/explore' },
+      { label: 'New Arrivals', path: '/explore' },
+      { label: 'Best Sellers', path: '/explore' },
+    ],
+  },
+  {
+    label: 'Contact Us',
+    items: [
+      { label: 'Get in Touch', path: '/contact' },
+      { label: 'Book Consultation', path: '/contact' },
+    ],
+  },
 ];
 
 export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const location = useLocation();
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const navigate = useNavigate();
+  const dropdownRef = useRef<HTMLUListElement>(null);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setOpenDropdown(null);
+      }
+    };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, []);
+
+  // Toggle a dropdown open/closed
+  const toggleDropdown = (label: string) => {
+    setOpenDropdown(openDropdown === label ? null : label);
+  };
+
+  // Navigate and close everything
+  const handleNav = (path: string) => {
+    navigate(path);
+    setOpenDropdown(null);
+    setMobileOpen(false);
+  };
 
   return (
     <nav className="navbar">
       <div className="navbar-inner">
 
-        {/* Brand logo — clicking goes to home */}
-        <Link to="/" className="navbar-brand">
-          <span className="navbar-brand-text">FANAAR</span>
-          <span className="navbar-brand-sub">FABRICS</span>
-        </Link>
-
-        {/* Desktop navigation links */}
-        <ul className="navbar-links">
-          {navLinks.map((link) => (
-            <li key={link.path}>
-              <Link
-                to={link.path}
-                className={`navbar-link ${location.pathname === link.path ? 'active' : ''}`}
+        {/* Left side: dropdown menus (desktop) */}
+        <ul className="navbar-links" ref={dropdownRef}>
+          {navMenus.map((menu) => (
+            <li key={menu.label} className="navbar-dropdown-wrap">
+              <button
+                className={`navbar-link navbar-dropdown-trigger ${openDropdown === menu.label ? 'active' : ''}`}
+                onClick={() => toggleDropdown(menu.label)}
               >
-                {link.label}
-              </Link>
+                {menu.label}
+                <ChevronDown className={`navbar-chevron ${openDropdown === menu.label ? 'rotated' : ''}`} />
+              </button>
+
+              {/* Dropdown panel */}
+              {openDropdown === menu.label && (
+                <div className="navbar-dropdown">
+                  {menu.items.map((item) => (
+                    <button
+                      key={item.label}
+                      className="navbar-dropdown-item"
+                      onClick={() => handleNav(item.path)}
+                    >
+                      {item.label}
+                    </button>
+                  ))}
+                </div>
+              )}
             </li>
           ))}
         </ul>
@@ -46,6 +101,12 @@ export function Navbar() {
         >
           {mobileOpen ? <X /> : <Menu />}
         </button>
+
+        {/* Right side: brand logo */}
+        <Link to="/" className="navbar-brand">
+          <span className="navbar-brand-text">FANAAR</span>
+          <span className="navbar-brand-sub">FABRICS</span>
+        </Link>
       </div>
 
       {/* Mobile slide-down menu */}
@@ -53,15 +114,31 @@ export function Navbar() {
         <>
           <div className="navbar-mobile-overlay" onClick={() => setMobileOpen(false)} />
           <div className="navbar-mobile-menu">
-            {navLinks.map((link) => (
-              <Link
-                key={link.path}
-                to={link.path}
-                className={`navbar-mobile-link ${location.pathname === link.path ? 'active' : ''}`}
-                onClick={() => setMobileOpen(false)}
-              >
-                {link.label}
-              </Link>
+            {navMenus.map((menu) => (
+              <div key={menu.label} className="mobile-menu-group">
+                <button
+                  className="mobile-menu-group-label"
+                  onClick={() => toggleDropdown(menu.label)}
+                >
+                  {menu.label}
+                  <ChevronDown className={`navbar-chevron ${openDropdown === menu.label ? 'rotated' : ''}`} />
+                </button>
+
+                {/* Mobile sub-items */}
+                {openDropdown === menu.label && (
+                  <div className="mobile-menu-sub">
+                    {menu.items.map((item) => (
+                      <button
+                        key={item.label}
+                        className="mobile-menu-sub-item"
+                        onClick={() => handleNav(item.path)}
+                      >
+                        {item.label}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
             ))}
           </div>
         </>
