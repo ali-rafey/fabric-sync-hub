@@ -22,6 +22,7 @@ const queryClient = new QueryClient();
 const App = () => {
   const [splashDone, setSplashDone] = useState(false);
 
+  // Show splash screen on first load
   if (!splashDone) {
     return <SplashScreen onComplete={() => setSplashDone(true)} />;
   }
@@ -29,21 +30,28 @@ const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
+        {/* Toast notifications */}
         <Toaster />
         <Sonner />
+
         <BrowserRouter>
           <Routes>
+            {/* Public pages */}
             <Route path="/" element={<Index />} />
             <Route path="/about" element={<About />} />
             <Route path="/explore" element={<Explore />} />
             <Route path="/explore/:category" element={<Explore />} />
             <Route path="/article/:id" element={<ArticleDetail />} />
             <Route path="/contact" element={<Contact />} />
+
+            {/* Admin pages */}
             <Route path="/123admin" element={<AdminLogin />} />
             <Route path="/123admin/dashboard" element={<AdminDashboard />} />
             <Route path="/123admin/articles" element={<AdminArticles />} />
             <Route path="/123admin/categories" element={<AdminCategories />} />
             <Route path="/123admin/specs" element={<AdminSpecs />} />
+
+            {/* 404 */}
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

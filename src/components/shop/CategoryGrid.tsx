@@ -7,20 +7,19 @@ interface CategoryGridProps {
   onCategorySelect: (category: FabricCategory) => void;
 }
 
+// Displays all fabric categories as clickable cards
 export function CategoryGrid({ onCategorySelect }: CategoryGridProps) {
+  // Fetch categories from database
   const { data: categories = [], isLoading } = useQuery({
     queryKey: ['categories'],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from('categories')
-        .select('*')
-        .order('name');
-
+      const { data, error } = await supabase.from('categories').select('*').order('name');
       if (error) throw error;
       return data as Category[];
     },
   });
 
+  // Loading skeleton
   if (isLoading) {
     return (
       <div className="category-grid">
@@ -45,21 +44,19 @@ export function CategoryGrid({ onCategorySelect }: CategoryGridProps) {
             onClick={() => onCategorySelect(category.name.toLowerCase())}
             className="category-card"
           >
+            {/* Category image with hover overlay */}
             <div className="category-image-wrap">
               <div className="category-image-overlay" />
               {info.image ? (
-                <img
-                  src={info.image}
-                  alt={info.name}
-                  className="category-image"
-                  loading="lazy"
-                />
+                <img src={info.image} alt={info.name} className="category-image" loading="lazy" />
               ) : (
                 <div className="category-placeholder">
                   <span>{info.name.charAt(0)}</span>
                 </div>
               )}
             </div>
+
+            {/* Category name and description */}
             <h3 className="category-name">{info.name}</h3>
             <p className="category-desc">{info.description}</p>
           </button>

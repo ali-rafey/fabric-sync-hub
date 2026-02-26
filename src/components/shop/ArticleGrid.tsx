@@ -8,7 +8,9 @@ interface ArticleGridProps {
   onArticleClick: (id: string) => void;
 }
 
+// Displays articles within a selected category
 export function ArticleGrid({ category, onArticleClick }: ArticleGridProps) {
+  // Fetch articles filtered by category
   const { data: articles, isLoading } = useQuery({
     queryKey: ['articles', category],
     queryFn: async () => {
@@ -17,12 +19,12 @@ export function ArticleGrid({ category, onArticleClick }: ArticleGridProps) {
         .select('*')
         .eq('category', category)
         .order('created_at', { ascending: false });
-
       if (error) throw error;
       return data as unknown as FabricArticle[];
     },
   });
 
+  // Loading skeleton
   if (isLoading) {
     return (
       <div className="article-grid-loading">
@@ -37,6 +39,7 @@ export function ArticleGrid({ category, onArticleClick }: ArticleGridProps) {
     );
   }
 
+  // Empty state
   if (!articles?.length) {
     return (
       <div className="article-grid-empty">
@@ -48,28 +51,20 @@ export function ArticleGrid({ category, onArticleClick }: ArticleGridProps) {
   return (
     <div className="article-grid">
       {articles.map((article) => (
-        <button
-          key={article.id}
-          onClick={() => onArticleClick(article.id)}
-          className="article-card"
-        >
+        <button key={article.id} onClick={() => onArticleClick(article.id)} className="article-card">
+          {/* Article image with out-of-stock badge */}
           <div className="article-image-wrap">
-            {!article.in_stock && (
-              <span className="article-badge">Out of Stock</span>
-            )}
+            {!article.in_stock && <span className="article-badge">Out of Stock</span>}
             {article.hero_image_url ? (
-              <img
-                src={article.hero_image_url}
-                alt={article.name}
-                className="article-image"
-                loading="lazy"
-              />
+              <img src={article.hero_image_url} alt={article.name} className="article-image" loading="lazy" />
             ) : (
               <div className="article-placeholder">
                 <span>{article.name.charAt(0)}</span>
               </div>
             )}
           </div>
+
+          {/* Article name and price */}
           <h3 className="article-name">{article.name}</h3>
           <p className="article-price">AED {Number(article.price_aed).toFixed(2)}</p>
         </button>

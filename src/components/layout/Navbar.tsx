@@ -3,26 +3,28 @@ import { Link, useLocation } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 import './Navbar.css';
 
+// Navigation links — "Home" removed, logo serves as home link
+const navLinks = [
+  { path: '/explore', label: 'Explore' },
+  { path: '/about', label: 'About Us' },
+  { path: '/contact', label: 'Contact Us' },
+];
+
 export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
 
-  const navLinks = [
-    { path: '/', label: 'Home' },
-    { path: '/explore', label: 'Explore' },
-    { path: '/about', label: 'About Us' },
-    { path: '/contact', label: 'Contact Us' },
-  ];
-
   return (
     <nav className="navbar">
       <div className="navbar-inner">
+
+        {/* Brand logo — clicking goes to home */}
         <Link to="/" className="navbar-brand">
           <span className="navbar-brand-text">FANAAR</span>
           <span className="navbar-brand-sub">FABRICS</span>
         </Link>
 
-        {/* Desktop Nav */}
+        {/* Desktop navigation links */}
         <ul className="navbar-links">
           {navLinks.map((link) => (
             <li key={link.path}>
@@ -36,7 +38,7 @@ export function Navbar() {
           ))}
         </ul>
 
-        {/* Mobile Toggle */}
+        {/* Mobile hamburger toggle */}
         <button
           className="navbar-mobile-toggle"
           onClick={() => setMobileOpen(!mobileOpen)}
@@ -46,7 +48,7 @@ export function Navbar() {
         </button>
       </div>
 
-      {/* Mobile Menu */}
+      {/* Mobile slide-down menu */}
       {mobileOpen && (
         <>
           <div className="navbar-mobile-overlay" onClick={() => setMobileOpen(false)} />

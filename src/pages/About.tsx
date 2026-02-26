@@ -1,24 +1,40 @@
 import { MainLayout } from '@/components/layout/MainLayout';
 import './About.css';
 
+// Stats shown in the about page
+const stats = [
+  { number: '60+', label: 'Years of Excellence' },
+  { number: '500+', label: 'Fabric Varieties' },
+  { number: '40+', label: 'Countries Served' },
+];
+
+// Manufacturing process highlights
+const processes = [
+  { title: 'Quality Testing', desc: 'Every batch tested for GSM, tear strength, and tensile durability' },
+  { title: 'Color Mastery', desc: 'Advanced dyeing with Reactive, VAT, and Indanthrene processes' },
+  { title: 'Sustainable Practices', desc: 'Water recycling and eco-friendly dye solutions' },
+  { title: 'Custom Development', desc: 'Bespoke fabric creation for your unique requirements' },
+];
+
 export default function About() {
   return (
     <MainLayout>
       <div className="about-page">
-        {/* Hero */}
+
+        {/* Hero banner */}
         <section className="about-hero">
           <div className="about-hero-bg" />
           <div className="about-hero-content">
             <h1 className="about-hero-title">Crafted with Heritage</h1>
-            <p className="about-hero-subtitle">
-              Three generations of excellence in textile manufacturing
-            </p>
+            <p className="about-hero-subtitle">Three generations of excellence in textile manufacturing</p>
           </div>
         </section>
 
-        {/* Story */}
+        {/* Story + stats + process */}
         <section className="about-story">
           <div className="about-story-inner">
+
+            {/* Our story */}
             <div className="story-block">
               <span className="story-label">Our Story</span>
               <h2 className="story-title">A Legacy of Quality</h2>
@@ -29,12 +45,9 @@ export default function About() {
               </p>
             </div>
 
+            {/* Stats cards */}
             <div className="stats-grid">
-              {[
-                { number: '60+', label: 'Years of Excellence' },
-                { number: '500+', label: 'Fabric Varieties' },
-                { number: '40+', label: 'Countries Served' },
-              ].map((stat) => (
+              {stats.map((stat) => (
                 <div key={stat.label} className="stat-card-about">
                   <span className="stat-number">{stat.number}</span>
                   <p className="stat-label">{stat.label}</p>
@@ -42,6 +55,7 @@ export default function About() {
               ))}
             </div>
 
+            {/* Process section */}
             <div>
               <span className="story-label">Our Process</span>
               <h2 className="story-title">From Fiber to Fabric</h2>
@@ -49,14 +63,8 @@ export default function About() {
                 Every bolt of fabric undergoes rigorous quality testing. Our in-house lab conducts
                 comprehensive GSM verification, tear and tensile strength testing, and colorfastness evaluation.
               </p>
-
               <div className="process-grid">
-                {[
-                  { title: 'Quality Testing', desc: 'Every batch tested for GSM, tear strength, and tensile durability' },
-                  { title: 'Color Mastery', desc: 'Advanced dyeing with Reactive, VAT, and Indanthrene processes' },
-                  { title: 'Sustainable Practices', desc: 'Water recycling and eco-friendly dye solutions' },
-                  { title: 'Custom Development', desc: 'Bespoke fabric creation for your unique requirements' },
-                ].map((item) => (
+                {processes.map((item) => (
                   <div key={item.title} className="process-card">
                     <h3 className="process-title">{item.title}</h3>
                     <p className="process-desc">{item.desc}</p>

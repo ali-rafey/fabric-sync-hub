@@ -2,10 +2,20 @@ import { MainLayout } from '@/components/layout/MainLayout';
 import { Mail, Phone, MapPin, Calendar } from 'lucide-react';
 import './Contact.css';
 
+// Business hours data
+const hours = [
+  { day: 'Mon - Fri', hours: '9:00 AM - 6:00 PM' },
+  { day: 'Saturday', hours: '9:00 AM - 2:00 PM' },
+  { day: 'Sunday', hours: 'Closed' },
+  { day: 'Holidays', hours: 'By Appointment' },
+];
+
 export default function Contact() {
   return (
     <MainLayout>
       <div className="contact-page">
+
+        {/* Page header */}
         <section className="contact-header">
           <div className="contact-header-inner">
             <span className="contact-label">Get in Touch</span>
@@ -17,8 +27,11 @@ export default function Contact() {
           </div>
         </section>
 
+        {/* Contact info + consultation card */}
         <section className="contact-grid">
           <div className="contact-grid-inner">
+
+            {/* Left: contact details */}
             <div className="contact-info">
               <h2 className="contact-info-title">Contact Information</h2>
               <div className="contact-info-items">
@@ -48,6 +61,7 @@ export default function Contact() {
               </div>
             </div>
 
+            {/* Right: consultation booking */}
             <div className="consultation-card">
               <div className="consultation-header">
                 <Calendar />
@@ -66,23 +80,18 @@ export default function Contact() {
                 onClick={() => window.open('https://calendar.google.com/calendar/appointments', '_blank')}
                 className="consultation-btn"
               >
-                <Calendar />
-                Schedule on Google Meet
+                <Calendar /> Schedule on Google Meet
               </button>
             </div>
           </div>
         </section>
 
+        {/* Business hours */}
         <section className="business-hours">
           <div className="business-hours-inner">
             <h2 className="business-hours-title">Business Hours</h2>
             <div className="business-hours-grid">
-              {[
-                { day: 'Mon - Fri', hours: '9:00 AM - 6:00 PM' },
-                { day: 'Saturday', hours: '9:00 AM - 2:00 PM' },
-                { day: 'Sunday', hours: 'Closed' },
-                { day: 'Holidays', hours: 'By Appointment' },
-              ].map((item) => (
+              {hours.map((item) => (
                 <div key={item.day} className="hours-item">
                   <p className="hours-day">{item.day}</p>
                   <p className="hours-time">{item.hours}</p>

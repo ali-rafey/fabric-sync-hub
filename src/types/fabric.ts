@@ -1,6 +1,7 @@
-// Category is now dynamic - stored in database
+// Category is dynamic — stored in database, not hardcoded
 export type FabricCategory = string;
 
+// Shape of a category row from the database
 export interface Category {
   id: string;
   name: string;
@@ -8,6 +9,7 @@ export interface Category {
   created_at: string;
 }
 
+// Technical specs for a fabric article
 export interface FabricSpecs {
   id: string;
   article_id: string;
@@ -18,6 +20,7 @@ export interface FabricSpecs {
   thread_count: string;
 }
 
+// Full fabric article from the database
 export interface FabricArticle {
   id: string;
   name: string;
@@ -33,6 +36,7 @@ export interface FabricArticle {
   fabric_specs?: FabricSpecs;
 }
 
+// Display info for a category card
 export interface CategoryInfo {
   id: string;
   name: string;
@@ -40,7 +44,7 @@ export interface CategoryInfo {
   image: string | null;
 }
 
-// Helper function to get category display info
+// Builds display info from a category name and optional image URL
 export function getCategoryInfo(categoryName: string, imageUrl?: string | null): CategoryInfo {
   return {
     id: categoryName,
