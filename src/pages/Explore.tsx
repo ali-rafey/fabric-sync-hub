@@ -9,12 +9,13 @@ import './Explore.css';
 export default function Explore() {
   const { category } = useParams<{ category?: string }>();
   const navigate = useNavigate();
-
   const categoryInfo = category ? getCategoryInfo(category) : null;
 
   return (
     <MainLayout>
       <div className="explore-page">
+
+        {/* Page header — shows category name or general title */}
         <section className="explore-header">
           <div className="explore-header-inner">
             {category ? (
@@ -39,13 +40,11 @@ export default function Explore() {
           </div>
         </section>
 
+        {/* Content — either category grid or article grid */}
         <section className="explore-content">
           <div className="explore-content-inner">
             {category ? (
-              <ArticleGrid
-                category={category}
-                onArticleClick={(id) => navigate(`/article/${id}`)}
-              />
+              <ArticleGrid category={category} onArticleClick={(id) => navigate(`/article/${id}`)} />
             ) : (
               <CategoryGrid onCategorySelect={(cat) => navigate(`/explore/${cat}`)} />
             )}

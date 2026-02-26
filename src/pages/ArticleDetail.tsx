@@ -10,35 +10,30 @@ export default function ArticleDetail() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
 
-  const { data: article, isLoading: articleLoading } = useQuery({
+  // Fetch the article
+  const { data: article, isLoading } = useQuery({
     queryKey: ['article', id],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from('articles')
-        .select('*')
-        .eq('id', id)
-        .maybeSingle();
+      const { data, error } = await supabase.from('articles').select('*').eq('id', id).maybeSingle();
       if (error) throw error;
       return data as unknown as FabricArticle | null;
     },
     enabled: !!id,
   });
 
+  // Fetch technical specs for this article
   const { data: specs } = useQuery({
     queryKey: ['fabric-specs', id],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from('fabric_specs')
-        .select('*')
-        .eq('article_id', id)
-        .maybeSingle();
+      const { data, error } = await supabase.from('fabric_specs').select('*').eq('article_id', id).maybeSingle();
       if (error) throw error;
       return data as unknown as FabricSpecs | null;
     },
     enabled: !!id,
   });
 
-  if (articleLoading) {
+  // Loading skeleton
+  if (isLoading) {
     return (
       <MainLayout>
         <div className="article-loading">
@@ -50,14 +45,13 @@ export default function ArticleDetail() {
     );
   }
 
+  // Not found
   if (!article) {
     return (
       <MainLayout>
         <div className="article-not-found">
           <p>Article not found</p>
-          <button onClick={() => navigate('/explore')} className="article-not-found-btn">
-            Back to Explore
-          </button>
+          <button onClick={() => navigate('/explore')} className="article-not-found-btn">Back to Explore</button>
         </div>
       </MainLayout>
     );
@@ -66,15 +60,18 @@ export default function ArticleDetail() {
   return (
     <MainLayout>
       <div className="article-detail-page">
+
+        {/* Back button */}
         <div className="article-back-section">
           <button className="article-back-btn" onClick={() => navigate(-1)}>
-            <ArrowLeft />
-            Back
+            <ArrowLeft /> Back
           </button>
         </div>
 
+        {/* Two-column layout: image + info */}
         <div className="article-detail-grid">
-          {/* Image */}
+
+          {/* Left: hero image */}
           <div className="article-hero-wrap">
             <div className="article-hero-card">
               {article.hero_image_url ? (
@@ -87,8 +84,10 @@ export default function ArticleDetail() {
             </div>
           </div>
 
-          {/* Info */}
+          {/* Right: article info */}
           <div className="article-info">
+
+            {/* Category badge + stock status */}
             <div className="article-meta">
               <span className="article-badge">{article.category}</span>
               <div className={`article-stock ${article.in_stock ? 'in-stock' : 'out-of-stock'}`}>
@@ -96,8 +95,10 @@ export default function ArticleDetail() {
               </div>
             </div>
 
+            {/* Title */}
             <h1 className="article-title">{article.name}</h1>
 
+            {/* Prices */}
             <div className="article-prices">
               <p className="article-price">AED {Number(article.price_aed).toFixed(2)}<span className="article-price-unit"> / meter</span></p>
               {article.price_usd != null && article.price_usd > 0 && (
@@ -108,9 +109,10 @@ export default function ArticleDetail() {
               )}
             </div>
 
+            {/* Description */}
             {article.description && <p className="article-description">{article.description}</p>}
 
-            {/* Specs */}
+            {/* Technical specs table */}
             {specs && (
               <div className="article-specs">
                 <h2 className="article-specs-title">Technical Specifications</h2>
@@ -124,7 +126,7 @@ export default function ArticleDetail() {
               </div>
             )}
 
-            {/* CTA */}
+            {/* Contact CTA */}
             <div className="article-cta">
               <h3 className="article-cta-title">Interested in this fabric?</h3>
               <p className="article-cta-text">Contact us for samples, bulk pricing, or custom requirements</p>
