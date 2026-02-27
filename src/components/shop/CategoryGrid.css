@@ -1,4 +1,4 @@
-/* Category Grid */
+/* ===================== Category Grid ===================== */
 .category-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -10,73 +10,123 @@
   background: none;
   border: none;
   cursor: pointer;
-  animation: fadeUp 0.5s ease-out both;
+  animation: cardSlideUp 0.6s ease-out both;
 }
 
-.category-card:nth-child(1) { animation-delay: 0ms; }
-.category-card:nth-child(2) { animation-delay: 50ms; }
-.category-card:nth-child(3) { animation-delay: 100ms; }
-.category-card:nth-child(4) { animation-delay: 150ms; }
-.category-card:nth-child(5) { animation-delay: 200ms; }
-.category-card:nth-child(6) { animation-delay: 250ms; }
-
+/* Portrait image wrapper */
 .category-image-wrap {
   aspect-ratio: 3/4;
   overflow: hidden;
-  border-radius: 0.5rem;
+  border-radius: 0.75rem;
   background: hsl(var(--secondary));
-  margin-bottom: 1rem;
   position: relative;
 }
 
+/* Gradient overlay — always visible, stronger at bottom */
 .category-image-overlay {
-  position: absolute; inset: 0;
-  background: linear-gradient(to top, hsl(var(--foreground) / 0.5), transparent);
-  opacity: 0;
-  transition: opacity 0.3s;
-  z-index: 10;
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    hsl(0 0% 0% / 0.65) 0%,
+    hsl(0 0% 0% / 0.1) 50%,
+    transparent 100%
+  );
+  z-index: 2;
+  transition: opacity 0.4s;
 }
 
-.category-card:hover .category-image-overlay { opacity: 1; }
+.category-card:hover .category-image-overlay {
+  opacity: 0.8;
+}
 
 .category-image {
-  width: 100%; height: 100%;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
-  transition: transform 0.5s;
+  transition: transform 0.7s ease;
 }
 
-.category-card:hover .category-image { transform: scale(1.05); }
+.category-card:hover .category-image {
+  transform: scale(1.08);
+}
 
 .category-placeholder {
-  width: 100%; height: 100%;
+  width: 100%;
+  height: 100%;
   background: linear-gradient(135deg, hsl(var(--secondary)), hsl(var(--accent)));
-  display: flex; align-items: center; justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .category-placeholder span {
   font-family: var(--font-display);
-  font-size: clamp(2rem, 5vw, 4rem);
-  color: hsl(var(--muted-foreground) / 0.3);
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  color: hsl(var(--muted-foreground) / 0.2);
+}
+
+/* Name overlaid on bottom of card */
+.category-name-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 3;
+  padding: 1.25rem;
+  transform: translateY(0);
+  transition: transform 0.4s ease;
+}
+
+.category-card:hover .category-name-overlay {
+  transform: translateY(-4px);
 }
 
 .category-name {
   font-family: var(--font-display);
-  font-size: 1.5rem;
-  color: hsl(var(--foreground));
-  margin-bottom: 0.25rem;
+  font-size: 1.35rem;
+  color: hsl(0 0% 100%);
+  margin-bottom: 0.15rem;
 }
 
 .category-desc {
-  font-size: 0.85rem;
-  color: hsl(var(--muted-foreground));
+  font-size: 0.75rem;
+  color: hsl(0 0% 100% / 0.6);
 }
 
-.category-skeleton .skeleton-image { animation: pulse 2s infinite; }
-.skeleton-text { height: 1.25rem; background: hsl(var(--secondary)); border-radius: 0.25rem; margin-bottom: 0.5rem; animation: pulse 2s infinite; }
-.skeleton-text.short { width: 60%; height: 1rem; }
+/* Skeleton */
+.category-skeleton .skeleton-shimmer {
+  animation: shimmer 1.5s ease infinite;
+  background: linear-gradient(90deg, hsl(var(--secondary)) 25%, hsl(var(--accent)) 50%, hsl(var(--secondary)) 75%);
+  background-size: 200% 100%;
+}
 
-@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }
-@keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+.skeleton-text {
+  height: 1rem;
+  width: 60%;
+  background: hsl(var(--secondary));
+  border-radius: 0.25rem;
+  margin-top: 0.75rem;
+}
 
-@media (max-width: 1024px) { .category-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 640px) { .category-grid { grid-template-columns: 1fr; } }
+@keyframes cardSlideUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 768px) {
+  .category-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .category-image-wrap {
+    aspect-ratio: 16/9;
+  }
+}

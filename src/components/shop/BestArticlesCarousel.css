@@ -1,0 +1,144 @@
+/* Best Articles Carousel */
+.carousel-section {
+  width: 100%;
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.carousel-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+}
+
+.carousel-label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: hsl(var(--muted-foreground));
+}
+
+.carousel-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  color: hsl(var(--foreground));
+  margin-top: 0.25rem;
+}
+
+.carousel-arrows {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.carousel-arrow {
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid hsl(var(--border));
+  background: hsl(var(--background));
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: hsl(var(--foreground));
+}
+
+.carousel-arrow:hover:not(:disabled) {
+  background: hsl(var(--foreground));
+  color: hsl(var(--background));
+}
+
+.carousel-arrow:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.carousel-arrow svg {
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
+/* Horizontal scroll track */
+.carousel-track {
+  display: flex;
+  gap: 1.25rem;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 0.5rem;
+}
+
+.carousel-track::-webkit-scrollbar {
+  display: none;
+}
+
+/* Individual card */
+.carousel-card {
+  flex: 0 0 16rem;
+  text-align: left;
+  background: none;
+  border: none;
+  cursor: pointer;
+  animation: slideUp 0.5s ease-out both;
+}
+
+.carousel-img-wrap {
+  aspect-ratio: 3/4;
+  overflow: hidden;
+  border-radius: 0.5rem;
+  background: hsl(var(--secondary));
+  margin-bottom: 0.75rem;
+  position: relative;
+}
+
+.carousel-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+
+.carousel-card:hover .carousel-img {
+  transform: scale(1.05);
+}
+
+.carousel-placeholder {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, hsl(var(--secondary)), hsl(var(--accent)));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.carousel-placeholder span {
+  font-family: var(--font-display);
+  font-size: 3rem;
+  color: hsl(var(--muted-foreground) / 0.25);
+}
+
+.carousel-card-name {
+  font-weight: 500;
+  font-size: 0.9rem;
+  color: hsl(var(--foreground));
+  margin-bottom: 0.2rem;
+}
+
+.carousel-card-price {
+  font-size: 0.8rem;
+  color: hsl(var(--muted-foreground));
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 768px) {
+  .carousel-section { padding: 0 1rem; }
+  .carousel-card { flex: 0 0 13rem; }
+}
