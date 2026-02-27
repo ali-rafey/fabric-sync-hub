@@ -5,11 +5,12 @@ import './CategoryGrid.css';
 
 interface CategoryGridProps {
   onCategorySelect: (category: FabricCategory) => void;
+  /** Limit number of categories shown (for homepage) */
+  limit?: number;
 }
 
-// Displays all fabric categories as clickable cards
-export function CategoryGrid({ onCategorySelect }: CategoryGridProps) {
-  // Fetch categories from database
+/* Displays fabric categories as portrait cards */
+export function CategoryGrid({ onCategorySelect, limit }: CategoryGridProps) {
   const { data: categories = [], isLoading } = useQuery({
     queryKey: ['categories'],
     queryFn: async () => {
@@ -19,15 +20,17 @@ export function CategoryGrid({ onCategorySelect }: CategoryGridProps) {
     },
   });
 
-  // Loading skeleton
+  /* Apply limit if provided */
+  const displayCategories = limit ? categories.slice(0, limit) : categories;
+
+  /* Loading skeleton */
   if (isLoading) {
     return (
       <div className="category-grid">
-        {[...Array(6)].map((_, i) => (
+        {[...Array(limit || 6)].map((_, i) => (
           <div key={i} className="category-card category-skeleton">
-            <div className="category-image-wrap skeleton-image" />
+            <div className="category-image-wrap skeleton-shimmer" />
             <div className="skeleton-text" />
-            <div className="skeleton-text short" />
           </div>
         ))}
       </div>
@@ -36,15 +39,16 @@ export function CategoryGrid({ onCategorySelect }: CategoryGridProps) {
 
   return (
     <div className="category-grid">
-      {categories.map((category) => {
+      {displayCategories.map((category, i) => {
         const info = getCategoryInfo(category.name, category.image_url);
         return (
           <button
             key={category.id}
             onClick={() => onCategorySelect(category.name.toLowerCase())}
             className="category-card"
+            style={{ animationDelay: `${i * 100}ms` }}
           >
-            {/* Category image with hover overlay */}
+            {/* Category image with gradient overlay */}
             <div className="category-image-wrap">
               <div className="category-image-overlay" />
               {info.image ? (
@@ -54,11 +58,12 @@ export function CategoryGrid({ onCategorySelect }: CategoryGridProps) {
                   <span>{info.name.charAt(0)}</span>
                 </div>
               )}
+              {/* Name inside the card */}
+              <div className="category-name-overlay">
+                <h3 className="category-name">{info.name}</h3>
+                <p className="category-desc">{info.description}</p>
+              </div>
             </div>
-
-            {/* Category name and description */}
-            <h3 className="category-name">{info.name}</h3>
-            <p className="category-desc">{info.description}</p>
           </button>
         );
       })}

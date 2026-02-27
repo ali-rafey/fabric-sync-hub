@@ -5,9 +5,8 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { SplashScreen } from "@/components/SplashScreen";
-import Index from "./pages/Index";
-import About from "./pages/About";
 import Explore from "./pages/Explore";
+import About from "./pages/About";
 import Contact from "./pages/Contact";
 import ArticleDetail from "./pages/ArticleDetail";
 import AdminLogin from "./pages/admin/AdminLogin";
@@ -22,7 +21,7 @@ const queryClient = new QueryClient();
 const App = () => {
   const [splashDone, setSplashDone] = useState(false);
 
-  // Show splash screen on first load
+  /* Splash screen on first load */
   if (!splashDone) {
     return <SplashScreen onComplete={() => setSplashDone(true)} />;
   }
@@ -30,18 +29,17 @@ const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
-        {/* Toast notifications */}
         <Toaster />
         <Sonner />
 
         <BrowserRouter>
           <Routes>
-            {/* Public pages */}
-            <Route path="/" element={<Index />} />
-            <Route path="/about" element={<About />} />
+            {/* Public pages — Explore is the landing page */}
+            <Route path="/" element={<Explore />} />
             <Route path="/explore" element={<Explore />} />
             <Route path="/explore/:category" element={<Explore />} />
             <Route path="/article/:id" element={<ArticleDetail />} />
+            <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
 
             {/* Admin pages */}
