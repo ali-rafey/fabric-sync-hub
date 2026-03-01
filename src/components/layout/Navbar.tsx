@@ -1,128 +1,79 @@
-import { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Menu, X, ChevronDown } from 'lucide-react';
 import './Navbar.css';
 
-/* Dropdown menu structure */
-const navMenus = [
-  {
-    label: 'About Us',
-    items: [
-      { label: 'Our Story', path: '/about' },
-      { label: 'Our Process', path: '/about' },
-      { label: 'Our Team', path: '/about' },
-    ],
-  },
-  {
-    label: 'Explore',
-    items: [
-      { label: 'All Categories', path: '/explore' },
-      { label: 'New Arrivals', path: '/explore' },
-      { label: 'Best Sellers', path: '/explore' },
-    ],
-  },
-  {
-    label: 'Contact Us',
-    items: [
-      { label: 'Get in Touch', path: '/contact' },
-      { label: 'Book Consultation', path: '/contact' },
-    ],
-  },
+const leftMenus = [
+  { label: 'Fabric', path: '/explore' },
+  { label: 'Thread', path: '/explore' },
+  { label: 'Demo', path: '/explore' },
+];
+
+const rightMenus = [
+  { label: 'About Us', path: '/about' },
+  { label: 'Contact Us', path: '/contact' },
+  { label: 'More', path: '/explore' },
 ];
 
 export function Navbar() {
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const navigate = useNavigate();
-  const dropdownRef = useRef<HTMLUListElement>(null);
-
-  /* Close dropdown on outside click */
-  useEffect(() => {
-    const handler = (e: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
-        setOpenDropdown(null);
-      }
-    };
-    document.addEventListener('mousedown', handler);
-    return () => document.removeEventListener('mousedown', handler);
-  }, []);
-
-  const toggleDropdown = (label: string) => {
-    setOpenDropdown(openDropdown === label ? null : label);
-  };
-
-  const handleNav = (path: string) => {
-    navigate(path);
-    setOpenDropdown(null);
-    setMobileOpen(false);
-  };
 
   return (
     <nav className="navbar">
       <div className="navbar-inner">
-
-        {/* Left: dropdown menus (desktop) */}
-        <ul className="navbar-links" ref={dropdownRef}>
-          {navMenus.map((menu) => (
-            <li key={menu.label} className="navbar-dropdown-wrap">
-              <button
-                className={`navbar-link ${openDropdown === menu.label ? 'active' : ''}`}
-                onClick={() => toggleDropdown(menu.label)}
-              >
-                {menu.label}
-                <ChevronDown className={`navbar-chevron ${openDropdown === menu.label ? 'rotated' : ''}`} />
+        {/* Left links */}
+        <ul className="navbar-side navbar-left">
+          {leftMenus.map((item) => (
+            <li key={item.label}>
+              <button className="navbar-link" onClick={() => navigate(item.path)}>
+                {item.label}
               </button>
+            </li>
+          ))}
+        </ul>
 
-              {openDropdown === menu.label && (
-                <div className="navbar-dropdown">
-                  {menu.items.map((item) => (
-                    <button key={item.label} className="navbar-dropdown-item" onClick={() => handleNav(item.path)}>
-                      {item.label}
-                    </button>
-                  ))}
-                </div>
-              )}
+        {/* Center brand */}
+        <Link to="/" className="navbar-brand">
+          <span className="navbar-brand-text">FANAAR</span>
+        </Link>
+
+        {/* Right links */}
+        <ul className="navbar-side navbar-right">
+          {rightMenus.map((item) => (
+            <li key={item.label}>
+              <button className="navbar-link" onClick={() => navigate(item.path)}>
+                {item.label}
+              </button>
             </li>
           ))}
         </ul>
 
         {/* Mobile hamburger */}
-        <button className="navbar-mobile-toggle" onClick={() => setMobileOpen(!mobileOpen)} aria-label="Toggle menu">
-          {mobileOpen ? <X /> : <Menu />}
+        <button className="navbar-mobile-toggle" onClick={() => {
+          const menu = document.querySelector('.navbar-mobile-menu');
+          const overlay = document.querySelector('.navbar-mobile-overlay');
+          if (menu) menu.classList.toggle('open');
+          if (overlay) overlay.classList.toggle('open');
+        }} aria-label="Toggle menu">
+          <span className="hamburger-line" />
+          <span className="hamburger-line" />
         </button>
-
-        {/* Right: brand */}
-        <Link to="/" className="navbar-brand">
-          <span className="navbar-brand-text">FANAAR</span>
-          <span className="navbar-brand-sub">FABRICS</span>
-        </Link>
       </div>
 
-      {/* Mobile menu */}
-      {mobileOpen && (
-        <>
-          <div className="navbar-mobile-overlay" onClick={() => setMobileOpen(false)} />
-          <div className="navbar-mobile-menu">
-            {navMenus.map((menu) => (
-              <div key={menu.label} className="mobile-menu-group">
-                <button className="mobile-menu-group-label" onClick={() => toggleDropdown(menu.label)}>
-                  {menu.label}
-                  <ChevronDown className={`navbar-chevron ${openDropdown === menu.label ? 'rotated' : ''}`} />
-                </button>
-                {openDropdown === menu.label && (
-                  <div className="mobile-menu-sub">
-                    {menu.items.map((item) => (
-                      <button key={item.label} className="mobile-menu-sub-item" onClick={() => handleNav(item.path)}>
-                        {item.label}
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-        </>
-      )}
+      {/* Mobile overlay */}
+      <div className="navbar-mobile-overlay" onClick={() => {
+        document.querySelector('.navbar-mobile-menu')?.classList.remove('open');
+        document.querySelector('.navbar-mobile-overlay')?.classList.remove('open');
+      }} />
+      <div className="navbar-mobile-menu">
+        {[...leftMenus, ...rightMenus].map((item) => (
+          <button key={item.label} className="mobile-menu-item" onClick={() => {
+            navigate(item.path);
+            document.querySelector('.navbar-mobile-menu')?.classList.remove('open');
+            document.querySelector('.navbar-mobile-overlay')?.classList.remove('open');
+          }}>
+            {item.label}
+          </button>
+        ))}
+      </div>
     </nav>
   );
 }

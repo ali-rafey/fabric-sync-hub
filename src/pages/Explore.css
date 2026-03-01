@@ -11,6 +11,7 @@
   position: absolute;
   inset: 0;
   z-index: 0;
+  background: #000;
 }
 
 .explore-hero-img,
@@ -23,12 +24,7 @@
 .explore-hero-fallback {
   width: 100%;
   height: 100%;
-  background: linear-gradient(
-    135deg,
-    hsl(var(--foreground)) 0%,
-    hsl(0 0% 20%) 50%,
-    hsl(var(--foreground)) 100%
-  );
+  background: linear-gradient(135deg, hsl(0 0% 5%) 0%, hsl(0 0% 15%) 50%, hsl(0 0% 5%) 100%);
   animation: gradientShift 8s ease infinite;
   background-size: 200% 200%;
 }
@@ -41,12 +37,7 @@
 .explore-hero-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    to top,
-    hsl(0 0% 0% / 0.7) 0%,
-    hsl(0 0% 0% / 0.2) 50%,
-    transparent 100%
-  );
+  background: linear-gradient(to top, hsl(0 0% 0% / 0.65) 0%, hsl(0 0% 0% / 0.15) 50%, transparent 100%);
 }
 
 .explore-hero-content {
@@ -60,10 +51,10 @@
 }
 
 .explore-hero-label {
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   text-transform: uppercase;
-  letter-spacing: 0.3em;
-  color: hsl(0 0% 100% / 0.6);
+  letter-spacing: 0.35em;
+  color: hsl(0 0% 100% / 0.5);
   display: block;
   margin-bottom: 1rem;
 }
@@ -77,12 +68,11 @@
 }
 
 .explore-hero-desc {
-  font-size: 1rem;
-  color: hsl(0 0% 100% / 0.65);
+  font-size: 0.95rem;
+  color: hsl(0 0% 100% / 0.55);
   margin-bottom: 2.5rem;
 }
 
-/* Scroll indicator */
 .explore-scroll-hint {
   display: flex;
   flex-direction: column;
@@ -92,10 +82,10 @@
 }
 
 .explore-scroll-hint span {
-  font-size: 0.65rem;
+  font-size: 0.6rem;
   text-transform: uppercase;
   letter-spacing: 0.2em;
-  color: hsl(0 0% 100% / 0.4);
+  color: hsl(0 0% 100% / 0.35);
 }
 
 .explore-scroll-line {
@@ -120,6 +110,56 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
+/* ---- Description section (4:1 ratio feel) ---- */
+.explore-desc-section {
+  background: hsl(var(--foreground));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 25vh !important;
+  scroll-snap-align: start;
+}
+
+.explore-desc-inner {
+  max-width: 56rem;
+  margin: 0 auto;
+  padding: 3rem 2rem;
+  text-align: center;
+  animation: heroFadeIn 0.8s ease-out both;
+}
+
+.explore-desc-label {
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.35em;
+  color: hsl(0 0% 100% / 0.35);
+  display: block;
+  margin-bottom: 0.75rem;
+}
+
+.explore-desc-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3.5vw, 2.5rem);
+  color: hsl(0 0% 100%);
+  margin-bottom: 1rem;
+  line-height: 1.2;
+}
+
+.explore-desc-text {
+  font-size: 0.85rem;
+  line-height: 1.8;
+  color: hsl(0 0% 100% / 0.5);
+  max-width: 42rem;
+  margin: 0 auto;
+}
+
+/* ---- Process section ---- */
+.explore-process-section {
+  background: hsl(var(--background));
+  padding: 0;
+  min-height: calc(100vh - 3.5rem);
+}
+
 /* ---- Categories section ---- */
 .explore-categories-section {
   background: hsl(var(--background));
@@ -138,7 +178,7 @@
 }
 
 .explore-label {
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   text-transform: uppercase;
   letter-spacing: 0.25em;
   color: hsl(var(--muted-foreground));
@@ -227,4 +267,5 @@
   .explore-categories-inner { padding: 0 1rem; }
   .explore-cat-header { padding: 1.5rem 1rem; }
   .explore-cat-content { padding: 1.5rem 1rem; }
+  .explore-desc-inner { padding: 2rem 1.5rem; }
 }
