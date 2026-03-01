@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import './ProcessSection.css';
 
 const steps = [
@@ -38,38 +38,48 @@ const steps = [
 
 export function ProcessSection() {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [animDir, setAnimDir] = useState<'up' | 'down'>('down');
   const containerRef = useRef<HTMLDivElement>(null);
-  const isScrolling = useRef(false);
+  const lockRef = useRef(false);
+  const accumulatorRef = useRef(0);
+
+  const THRESHOLD = 60; // pixels of accumulated delta before switching
+
+  const goTo = useCallback((next: number, dir: 'up' | 'down') => {
+    if (lockRef.current) return;
+    lockRef.current = true;
+    setAnimDir(dir);
+    setActiveIndex(next);
+    accumulatorRef.current = 0;
+    setTimeout(() => { lockRef.current = false; }, 900);
+  }, []);
 
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
 
     const handleWheel = (e: WheelEvent) => {
-      e.preventDefault();
-      if (isScrolling.current) return;
+      if (lockRef.current) { e.preventDefault(); return; }
 
       const direction = e.deltaY > 0 ? 1 : -1;
       const nextIndex = activeIndex + direction;
 
       if (nextIndex >= 0 && nextIndex < steps.length) {
-        isScrolling.current = true;
-        setActiveIndex(nextIndex);
-        setTimeout(() => { isScrolling.current = false; }, 800);
-      } else {
-        // Let parent scroll handle it
-        const parentSnap = container.closest('.snap-container');
-        if (parentSnap) {
-          parentSnap.scrollBy({ top: direction * window.innerHeight, behavior: 'smooth' });
+        e.preventDefault();
+        accumulatorRef.current += Math.abs(e.deltaY);
+        if (accumulatorRef.current >= THRESHOLD) {
+          goTo(nextIndex, direction > 0 ? 'down' : 'up');
         }
+      } else {
+        // At boundary — let parent snap container handle it
+        accumulatorRef.current = 0;
       }
     };
 
-    // Touch handling
     let touchStartY = 0;
     const handleTouchStart = (e: TouchEvent) => { touchStartY = e.touches[0].clientY; };
     const handleTouchEnd = (e: TouchEvent) => {
-      if (isScrolling.current) return;
+      if (lockRef.current) return;
       const diff = touchStartY - e.changedTouches[0].clientY;
       if (Math.abs(diff) < 40) return;
 
@@ -77,27 +87,21 @@ export function ProcessSection() {
       const nextIndex = activeIndex + direction;
 
       if (nextIndex >= 0 && nextIndex < steps.length) {
-        isScrolling.current = true;
-        setActiveIndex(nextIndex);
-        setTimeout(() => { isScrolling.current = false; }, 800);
-      } else {
-        const parentSnap = container.closest('.snap-container');
-        if (parentSnap) {
-          parentSnap.scrollBy({ top: direction * window.innerHeight, behavior: 'smooth' });
-        }
+        e.preventDefault();
+        goTo(nextIndex, direction > 0 ? 'down' : 'up');
       }
     };
 
     container.addEventListener('wheel', handleWheel, { passive: false });
     container.addEventListener('touchstart', handleTouchStart, { passive: true });
-    container.addEventListener('touchend', handleTouchEnd, { passive: true });
+    container.addEventListener('touchend', handleTouchEnd, { passive: false });
 
     return () => {
       container.removeEventListener('wheel', handleWheel);
       container.removeEventListener('touchstart', handleTouchStart);
       container.removeEventListener('touchend', handleTouchEnd);
     };
-  }, [activeIndex]);
+  }, [activeIndex, goTo]);
 
   const current = steps[activeIndex];
 
@@ -123,19 +127,22 @@ export function ProcessSection() {
             <button
               key={step.key}
               className={`process-dot ${i === activeIndex ? 'active' : ''}`}
-              onClick={() => setActiveIndex(i)}
+              onClick={() => {
+                const dir = i > activeIndex ? 'down' : 'up';
+                goTo(i, dir);
+              }}
               aria-label={step.title}
             />
           ))}
         </div>
 
-        <div className="process-text-content">
-          <span className="process-step-label" key={`label-${current.key}`}>
+        <div className={`process-text-content process-anim-${animDir}`} key={current.key}>
+          <span className="process-step-label">
             {String(activeIndex + 1).padStart(2, '0')} / {String(steps.length).padStart(2, '0')}
           </span>
-          <span className="process-subtitle" key={`sub-${current.key}`}>{current.subtitle}</span>
-          <h2 className="process-title" key={`title-${current.key}`}>{current.title}</h2>
-          <p className="process-desc" key={`desc-${current.key}`}>{current.description}</p>
+          <span className="process-subtitle">{current.subtitle}</span>
+          <h2 className="process-title">{current.title}</h2>
+          <p className="process-desc">{current.description}</p>
         </div>
       </div>
     </div>

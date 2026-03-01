@@ -21,8 +21,9 @@
   height: 100%;
   object-fit: cover;
   opacity: 0;
-  transform: scale(1.08);
-  transition: opacity 0.8s ease, transform 1.2s ease;
+  transform: scale(1.1);
+  transition: opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1), transform 1.4s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
 }
 
 .process-image.active {
@@ -58,14 +59,14 @@
   border: 1px solid hsl(var(--border));
   background: transparent;
   cursor: pointer;
-  transition: all 0.4s ease;
+  transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
   padding: 0;
 }
 
 .process-dot.active {
   background: hsl(var(--foreground));
   border-color: hsl(var(--foreground));
-  transform: scale(1.3);
+  transform: scale(1.4);
 }
 
 /* Text content */
@@ -74,13 +75,34 @@
   margin-left: 3rem;
 }
 
+/* Animation — slide down (scroll-up direction) */
+.process-anim-down .process-step-label,
+.process-anim-down .process-subtitle,
+.process-anim-down .process-title,
+.process-anim-down .process-desc {
+  animation: processSlideDown 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Animation — slide up (scroll-down direction) */
+.process-anim-up .process-step-label,
+.process-anim-up .process-subtitle,
+.process-anim-up .process-title,
+.process-anim-up .process-desc {
+  animation: processSlideUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Stagger delays */
+.process-text-content .process-step-label { animation-delay: 0s; }
+.process-text-content .process-subtitle   { animation-delay: 0.06s; }
+.process-text-content .process-title      { animation-delay: 0.12s; }
+.process-text-content .process-desc       { animation-delay: 0.2s; }
+
 .process-step-label {
   font-size: 0.6rem;
   letter-spacing: 0.25em;
   color: hsl(var(--muted-foreground));
   display: block;
   margin-bottom: 0.5rem;
-  animation: processFadeIn 0.6s ease both;
 }
 
 .process-subtitle {
@@ -90,7 +112,6 @@
   color: hsl(var(--muted-foreground));
   display: block;
   margin-bottom: 0.75rem;
-  animation: processFadeIn 0.6s ease 0.1s both;
 }
 
 .process-title {
@@ -99,24 +120,22 @@
   color: hsl(var(--foreground));
   margin-bottom: 1.25rem;
   line-height: 1.1;
-  animation: processSlideUp 0.7s ease 0.15s both;
 }
 
 .process-desc {
   font-size: 0.85rem;
   line-height: 1.8;
   color: hsl(var(--muted-foreground));
-  animation: processSlideUp 0.7s ease 0.25s both;
-}
-
-@keyframes processFadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
 }
 
 @keyframes processSlideUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes processSlideDown {
+  from { opacity: 0; transform: translateY(-30px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 /* ---- Mobile ---- */
