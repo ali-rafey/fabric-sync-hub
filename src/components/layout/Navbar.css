@@ -1,13 +1,12 @@
-/* ===================== Navbar ===================== */
+/* ===================== Navbar – Transparent, Centered Brand ===================== */
 .navbar {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   z-index: 100;
-  background: hsl(0 0% 100% / 0.92);
-  backdrop-filter: blur(16px);
-  border-bottom: 1px solid hsl(var(--border));
+  background: transparent;
+  transition: background 0.4s ease;
 }
 
 .navbar-inner {
@@ -17,134 +16,88 @@
   height: 3.5rem;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
+  position: relative;
 }
 
-/* ---- Brand (right side) ---- */
+/* ---- Side link groups ---- */
+.navbar-side {
+  list-style: none;
+  display: flex;
+  gap: 1.5rem;
+  margin: 0;
+  padding: 0;
+  flex: 1;
+}
+
+.navbar-left { justify-content: flex-end; }
+.navbar-right { justify-content: flex-start; }
+
+.navbar-link {
+  font-size: 0.6rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  color: hsl(0 0% 100% / 0.75);
+  text-transform: uppercase;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.3rem 0;
+  transition: color 0.3s;
+}
+
+.navbar-link:hover {
+  color: hsl(0 0% 100%);
+}
+
+/* ---- Centered brand ---- */
 .navbar-brand {
   text-decoration: none;
-  display: flex;
-  align-items: baseline;
-  gap: 0.4rem;
-  margin-left: auto;
+  margin: 0 2.5rem;
+  flex-shrink: 0;
 }
 
 .navbar-brand-text {
   font-family: var(--font-display);
-  font-size: 1.25rem;
-  color: hsl(var(--foreground));
-  letter-spacing: 0.15em;
-}
-
-.navbar-brand-sub {
-  font-size: 0.6rem;
-  letter-spacing: 0.2em;
-  color: hsl(var(--muted-foreground));
-  text-transform: uppercase;
-}
-
-/* ---- Desktop nav links (left side) ---- */
-.navbar-links {
-  list-style: none;
-  display: flex;
-  gap: 0.25rem;
-  margin: 0;
-  padding: 0;
-}
-
-.navbar-dropdown-wrap {
-  position: relative;
-}
-
-.navbar-link {
-  text-decoration: none;
-  font-size: 0.7rem;
-  font-weight: 500;
-  letter-spacing: 0.08em;
-  color: hsl(var(--muted-foreground));
-  transition: color 0.2s;
-  text-transform: uppercase;
-  background: none;
-  border: none;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.25rem;
-  padding: 0.4rem 0.6rem;
-  border-radius: 0.25rem;
-}
-
-.navbar-link.active {
-  color: hsl(var(--foreground));
-}
-
-/* ---- Chevron icon ---- */
-.navbar-chevron {
-  width: 0.7rem;
-  height: 0.7rem;
-  transition: transform 0.25s ease;
-}
-
-.navbar-chevron.rotated {
-  transform: rotate(180deg);
-}
-
-/* ---- Dropdown panel ---- */
-.navbar-dropdown {
-  position: absolute;
-  top: calc(100% + 0.35rem);
-  left: 0;
-  min-width: 11rem;
-  background: hsl(var(--background));
-  border: 1px solid hsl(var(--border));
-  border-radius: 0.5rem;
-  box-shadow: 0 12px 32px hsl(var(--foreground) / 0.08);
-  padding: 0.25rem;
-  display: flex;
-  flex-direction: column;
-  animation: dropdownIn 0.2s ease-out;
-  z-index: 200;
-}
-
-.navbar-dropdown-item {
-  display: block;
-  width: 100%;
-  text-align: left;
-  padding: 0.5rem 0.75rem;
-  border: none;
-  background: none;
-  cursor: pointer;
-  font-size: 0.8rem;
-  color: hsl(var(--foreground));
-  border-radius: 0.25rem;
-  transition: background 0.15s;
-}
-
-.navbar-dropdown-item:hover {
-  background: hsl(var(--accent));
+  font-size: 1.35rem;
+  color: hsl(0 0% 100%);
+  letter-spacing: 0.25em;
 }
 
 /* ---- Mobile toggle ---- */
 .navbar-mobile-toggle {
   display: none;
+  flex-direction: column;
+  gap: 4px;
   background: none;
   border: none;
   cursor: pointer;
-  color: hsl(var(--foreground));
+  position: absolute;
+  left: 1rem;
 }
 
-.navbar-mobile-toggle svg {
-  width: 1.25rem;
-  height: 1.25rem;
+.hamburger-line {
+  display: block;
+  width: 18px;
+  height: 1.5px;
+  background: hsl(0 0% 100% / 0.8);
+  transition: all 0.3s;
 }
 
 /* ---- Mobile overlay + menu ---- */
 .navbar-mobile-overlay {
   position: fixed;
   inset: 0;
-  background: hsl(0 0% 0% / 0.4);
+  background: hsl(0 0% 0% / 0.5);
   z-index: 98;
-  animation: fadeIn 0.2s ease;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+
+.navbar-mobile-overlay.open {
+  opacity: 1;
+  pointer-events: auto;
 }
 
 .navbar-mobile-menu {
@@ -152,85 +105,46 @@
   top: 3.5rem;
   left: 0;
   right: 0;
-  background: hsl(var(--background));
-  border-bottom: 1px solid hsl(var(--border));
+  background: hsl(0 0% 5% / 0.95);
+  backdrop-filter: blur(20px);
   display: flex;
   flex-direction: column;
-  padding: 0.5rem 0;
+  padding: 1rem 0;
   z-index: 99;
-  animation: slideDown 0.25s ease-out;
-  max-height: calc(100vh - 3.5rem);
-  overflow-y: auto;
+  transform: translateY(-100%);
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.35s ease;
 }
 
-/* ---- Mobile menu groups ---- */
-.mobile-menu-group {
-  border-bottom: 1px solid hsl(var(--border) / 0.5);
+.navbar-mobile-menu.open {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
 }
 
-.mobile-menu-group:last-child {
-  border-bottom: none;
-}
-
-.mobile-menu-group-label {
+.mobile-menu-item {
   width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.875rem 1.25rem;
+  text-align: center;
+  padding: 0.875rem 1.5rem;
   background: none;
   border: none;
   cursor: pointer;
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: hsl(var(--foreground));
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: hsl(0 0% 100% / 0.7);
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.12em;
+  transition: color 0.2s;
 }
 
-.mobile-menu-sub {
-  display: flex;
-  flex-direction: column;
-  padding: 0 0 0.5rem;
-  animation: slideDown 0.15s ease-out;
-}
-
-.mobile-menu-sub-item {
-  width: 100%;
-  text-align: left;
-  padding: 0.625rem 2rem;
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 0.8rem;
-  color: hsl(var(--muted-foreground));
-  transition: all 0.15s;
-}
-
-.mobile-menu-sub-item:hover {
-  color: hsl(var(--foreground));
-  background: hsl(var(--accent));
-}
-
-/* ---- Animations ---- */
-@keyframes dropdownIn {
-  from { opacity: 0; transform: translateY(-6px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes slideDown {
-  from { opacity: 0; transform: translateY(-0.5rem); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+.mobile-menu-item:hover {
+  color: hsl(0 0% 100%);
 }
 
 /* ---- Mobile breakpoint ---- */
 @media (max-width: 768px) {
-  .navbar-links { display: none; }
+  .navbar-side { display: none; }
   .navbar-mobile-toggle { display: flex; }
-  .navbar-inner { padding: 0 1rem; }
+  .navbar-brand { margin: 0 auto; }
 }
