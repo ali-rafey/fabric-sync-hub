@@ -4,7 +4,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { MainLayout } from '@/components/layout/MainLayout';
 import { CategoryGrid } from '@/components/shop/CategoryGrid';
 import { ArticleGrid } from '@/components/shop/ArticleGrid';
-import { BestArticlesCarousel } from '@/components/shop/BestArticlesCarousel';
+import { BlogsSection } from '@/components/shop/BlogsSection';
 import { ProcessSection } from '@/components/shop/ProcessSection';
 import { ArrowLeft } from 'lucide-react';
 import { getCategoryInfo } from '@/types/fabric';
@@ -91,17 +91,11 @@ export default function Explore() {
         </div>
       </section>
 
-      {/* Section 2: Description Bar (4:1 ratio) */}
-      <section className="snap-section explore-desc-section">
-        <div className="explore-desc-inner">
-          <span className="explore-desc-label">Since 1990</span>
-          <h2 className="explore-desc-title">Where Tradition Meets Innovation</h2>
-          <p className="explore-desc-text">
-            For over three decades, Fanaar Fabrics has been at the forefront of premium textile
-            manufacturing. We blend time-honoured craftsmanship with cutting-edge technology to
-            deliver fabrics that exceed the highest international standards.
-          </p>
-        </div>
+      {/* Section 2: Simple text description */}
+      <section className="snap-section explore-text-section">
+        <p className="explore-simple-text">
+          Premium fabrics crafted with precision — from raw fibre to finished textile, every thread tells a story of excellence.
+        </p>
       </section>
 
       {/* Section 3: Process – 4-step snap scroll (Sourcing / Purpose / Testing / Sampling) */}
@@ -120,9 +114,9 @@ export default function Explore() {
         </div>
       </section>
 
-      {/* Section 5: Best Articles Carousel */}
-      <section className="snap-section explore-carousel-section">
-        <BestArticlesCarousel onArticleClick={(id) => navigate(`/article/${id}`)} />
+      {/* Section 5: Articles & Blogs */}
+      <section className="snap-section explore-blogs-section">
+        <BlogsSection />
       </section>
     </MainLayout>
   );
