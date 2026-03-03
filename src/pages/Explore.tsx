@@ -1,4 +1,5 @@
-import { useParams, useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { MainLayout } from '@/components/layout/MainLayout';
@@ -14,6 +15,27 @@ export default function Explore() {
   const { category } = useParams<{ category?: string }>();
   const navigate = useNavigate();
   const categoryInfo = category ? getCategoryInfo(category) : null;
+
+  // Restore scroll position when returning from blog detail
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    const stored = window.sessionStorage.getItem('explore_scroll_y');
+    if (stored) {
+      const offset = parseFloat(stored);
+      if (!Number.isNaN(offset)) {
+        const container = document.querySelector('.snap-container');
+        if (container instanceof HTMLElement) {
+          container.scrollTo({ top: offset, behavior: 'instant' as ScrollBehavior });
+        } else {
+          window.scrollTo({ top: offset });
+        }
+      }
+      window.sessionStorage.removeItem('explore_scroll_y');
+      return;
+    }
+
+  }, []);
 
   const { data: heroSetting } = useQuery({
     queryKey: ['site-settings', 'hero_media'],

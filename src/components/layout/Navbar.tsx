@@ -2,9 +2,9 @@ import { Link, useNavigate } from 'react-router-dom';
 import './Navbar.css';
 
 const leftMenus = [
-  { label: 'Fabric', path: '/explore' },
-  { label: 'Thread', path: '/explore' },
-  { label: 'Blog', path: '/blog' },
+  { label: 'Fabric', path: '/categories', key: 'fabric' },
+  { label: 'Thread', path: '/explore', key: 'thread' },
+  { label: 'Blog', path: '/blog', key: 'blog' },
 ];
 
 const rightMenus = [
@@ -23,7 +23,10 @@ export function Navbar() {
         <ul className="navbar-side navbar-left">
           {leftMenus.map((item) => (
             <li key={item.label}>
-              <button className="navbar-link" onClick={() => navigate(item.path)}>
+              <button
+                className="navbar-link"
+                onClick={() => navigate(item.path)}
+              >
                 {item.label}
               </button>
             </li>

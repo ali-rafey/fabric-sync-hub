@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useMutation, useQueryClient, useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { FabricArticle, FabricSpecs, Category } from '@/types/fabric';
@@ -25,7 +25,15 @@ export function ArticleForm({ article, onClose }: ArticleFormProps) {
     hero_image_url: article?.hero_image_url || '',
   });
 
-  const [specs, setSpecs] = useState({ gsm: 0, tear_strength: '', tensile_strength: '', dye_class: '', thread_count: '' });
+  const [specs, setSpecs] = useState<FabricSpecs>({
+    id: '',
+    article_id: article?.id || '',
+    gsm: 0,
+    tear_strength: '',
+    tensile_strength: '',
+    dye_class: '',
+    thread_count: '',
+  });
   const [uploading, setUploading] = useState(false);
   const [imagePreview, setImagePreview] = useState<string | null>(article?.hero_image_url || null);
 
@@ -38,6 +46,29 @@ export function ArticleForm({ article, onClose }: ArticleFormProps) {
     },
   });
 
+  const { data: existingSpecs } = useQuery({
+    queryKey: ['article-specs', article?.id],
+    queryFn: async () => {
+      if (!article?.id) return null;
+      const { data, error } = await supabase
+        .from('fabric_specs')
+        .select('*')
+        .eq('article_id', article.id)
+        .maybeSingle();
+      if (error) throw error;
+      return data as FabricSpecs | null;
+    },
+    enabled: !!article?.id,
+  });
+
+  useEffect(() => {
+    if (existingSpecs) {
+      setSpecs(existingSpecs);
+    } else if (article?.id) {
+      setSpecs((prev) => ({ ...prev, article_id: article.id }));
+    }
+  }, [existingSpecs, article?.id]);
+
   const saveMutation = useMutation({
     mutationFn: async () => {
       if (article) {
@@ -46,9 +77,11 @@ export function ArticleForm({ article, onClose }: ArticleFormProps) {
         if (specs.gsm > 0) {
           const { data: existingSpec } = await supabase.from('fabric_specs').select('id').eq('article_id', article.id).maybeSingle();
           if (existingSpec) {
-            await supabase.from('fabric_specs').update(specs).eq('article_id', article.id);
+            const { id: _id, article_id: _articleId, ...specUpdates } = specs;
+            await supabase.from('fabric_specs').update(specUpdates).eq('article_id', article.id);
           } else {
-            await supabase.from('fabric_specs').insert({ ...specs, article_id: article.id });
+            const { id: _id, ...insertData } = specs;
+            await supabase.from('fabric_specs').insert({ ...insertData, article_id: article.id });
           }
         }
       } else {

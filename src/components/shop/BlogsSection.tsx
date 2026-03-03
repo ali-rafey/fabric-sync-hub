@@ -31,7 +31,15 @@ export function BlogsSection() {
           <article
             key={blog.id}
             className="blog-card"
-            onClick={() => navigate(`/blog/${blog.id}`)}
+            onClick={() => {
+              if (typeof window !== 'undefined') {
+                const container = document.querySelector('.snap-container');
+                const y =
+                  container instanceof HTMLElement ? container.scrollTop : window.scrollY;
+                window.sessionStorage.setItem('explore_scroll_y', String(y));
+              }
+              navigate(`/blog/${blog.id}`);
+            }}
           >
             {blog.image_url && (
               <div className="blog-card-image">
