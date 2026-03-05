@@ -1,7 +1,9 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { supabase } from '@/integrations/supabase/client';
 import './ProcessSection.css';
 
-const steps = [
+const defaultSteps = [
   {
     key: 'sourcing',
     title: 'Sourcing',
@@ -37,6 +39,30 @@ const steps = [
 ];
 
 export function ProcessSection() {
+  const { data: processSection } = useQuery({
+    queryKey: ['process-section'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('site_settings')
+        .select('value')
+        .eq('key', 'process_section')
+        .maybeSingle();
+      if (error) throw error;
+      if (!data?.value) return [];
+      try {
+        return JSON.parse(data.value) as { image?: string }[];
+      } catch {
+        return [];
+      }
+    },
+  });
+
+  const steps = useMemo(() => {
+    return defaultSteps.map((step, i) => ({
+      ...step,
+      image: (processSection?.[i] as { image?: string } | undefined)?.image || step.image,
+    }));
+  }, [processSection]);
   const [activeIndex, setActiveIndex] = useState(0);
   const [animDir, setAnimDir] = useState<'up' | 'down'>('down');
   const containerRef = useRef<HTMLDivElement>(null);

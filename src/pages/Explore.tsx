@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
@@ -37,21 +37,46 @@ export default function Explore() {
 
   }, []);
 
-  const { data: heroSetting } = useQuery({
-    queryKey: ['site-settings', 'hero_media'],
+  const { data: heroSettings } = useQuery({
+    queryKey: ['site-settings-hero'],
     queryFn: async () => {
       const { data, error } = await supabase
         .from('site_settings')
         .select('*')
-        .eq('key', 'hero_media')
-        .maybeSingle();
+        .in('key', ['hero_media', 'hero_video_muted']);
       if (error) throw error;
-      return data;
+      const map = new Map((data || []).map((r) => [r.key, r]));
+      return { hero_media: map.get('hero_media'), hero_video_muted: map.get('hero_video_muted') };
     },
   });
 
+  const heroSetting = heroSettings?.hero_media;
   const heroUrl = heroSetting?.value;
   const heroType = heroSetting?.media_type || 'image';
+  // Sound on when value is '0'; otherwise muted (default for autoplay)
+  const heroMuted = heroSettings?.hero_video_muted?.value !== '0';
+  const heroVideoRef = useRef<HTMLVideoElement>(null);
+
+  // Handle video autoplay gracefully to prevent browser stuttering/blocking on unmuted videos
+  useEffect(() => {
+    if (heroType === 'video' && heroUrl && heroVideoRef.current) {
+      const video = heroVideoRef.current;
+      video.load();
+      video.muted = heroMuted;
+
+      const attemptPlay = async () => {
+        try {
+          await video.play();
+        } catch (error) {
+          console.warn('Autoplay failed with current audio settings. Falling back to muted playback.', error);
+          video.muted = true;
+          video.play().catch(e => console.error('Fallback muted playback also failed.', e));
+        }
+      };
+
+      attemptPlay();
+    }
+  }, [heroUrl, heroType, heroMuted]);
 
   if (category) {
     return (
@@ -83,15 +108,18 @@ export default function Explore() {
       {/* Section 1: Full-screen Hero */}
       <section className="snap-section explore-hero">
         <div className="explore-hero-media">
-        {heroUrl ? (
+          {heroUrl ? (
             heroType === 'video' ? (
               <video
+                ref={heroVideoRef}
                 src={heroUrl}
-                autoPlay
-                muted
+                muted={heroMuted}
                 loop
                 playsInline
                 preload="auto"
+                crossOrigin="anonymous"
+                disablePictureInPicture
+                controlsList="nodownload nofullscreen noremoteplayback"
                 className="explore-hero-video"
               />
             ) : (

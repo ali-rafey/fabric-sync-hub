@@ -16,6 +16,8 @@
 
 .explore-hero-video {
   background: #000;
+  backface-visibility: hidden;
+  will-change: transform;
 }
 
 .explore-hero-img,

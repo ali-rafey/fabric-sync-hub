@@ -5,6 +5,7 @@ import { AdminLayout } from '@/components/admin/AdminLayout';
 import { ArticleForm } from '@/components/admin/ArticleForm';
 import { FabricArticle } from '@/types/fabric';
 import { Plus, Pencil, Trash2, Package } from 'lucide-react';
+import { useSearchParams } from 'react-router-dom';
 import './AdminArticles.css';
 
 export default function AdminArticles() {
@@ -12,14 +13,22 @@ export default function AdminArticles() {
   const [showForm, setShowForm] = useState(false);
   const [editingArticle, setEditingArticle] = useState<FabricArticle | null>(null);
 
+  const [searchParams, setSearchParams] = useSearchParams();
+  const categoryFilter = searchParams.get('category');
+
   const { data: articles, isLoading } = useQuery({
-    queryKey: ['admin-articles'],
+    queryKey: ['admin-articles', categoryFilter],
     queryFn: async () => {
-      const { data, error } = await supabase
+      let query = supabase
         .from('articles')
         .select('*')
         .order('created_at', { ascending: false });
 
+      if (categoryFilter) {
+        query = query.eq('category', categoryFilter);
+      }
+
+      const { data, error } = await query;
       if (error) throw error;
       return data as unknown as FabricArticle[];
     },
@@ -63,10 +72,17 @@ export default function AdminArticles() {
     <AdminLayout
       title="Articles"
       actions={
-        <button className="admin-add-btn" onClick={() => { setEditingArticle(null); setShowForm(true); }}>
-          <Plus />
-          Add Article
-        </button>
+        <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+          {categoryFilter && (
+            <button className="btn-cancel-modal" onClick={() => setSearchParams({})}>
+              Clear Filter: {categoryFilter}
+            </button>
+          )}
+          <button className="admin-add-btn" onClick={() => { setEditingArticle(null); setShowForm(true); }}>
+            <Plus />
+            Add Article
+          </button>
+        </div>
       }
     >
       {isLoading ? (

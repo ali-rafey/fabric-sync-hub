@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
-import { LayoutDashboard, Package, LogOut, FolderOpen, Menu, X } from 'lucide-react';
+import { LayoutDashboard, Package, LogOut, FolderOpen, Sliders, Menu, X, FileText } from 'lucide-react';
 import './AdminLayout.css';
 
 interface AdminLayoutProps {
@@ -57,8 +57,9 @@ export function AdminLayout({ children, title, actions }: AdminLayoutProps) {
 
   const navItems = [
     { path: '/123admin/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-    { path: '/123admin/articles', label: 'Articles', icon: Package },
+    { path: '/123admin/blogs', label: 'Blogs', icon: FileText },
     { path: '/123admin/categories', label: 'Categories', icon: FolderOpen },
+    { path: '/123admin/extra', label: 'Extra', icon: Sliders },
   ];
 
   if (loading) {

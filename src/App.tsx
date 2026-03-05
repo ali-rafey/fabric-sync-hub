@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useState, useEffect } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -14,34 +14,39 @@ import BlogDetail from "./pages/BlogDetail";
 import BlogListing from "./pages/BlogListing";
 import AdminLogin from "./pages/admin/AdminLogin";
 import AdminDashboard from "./pages/admin/AdminDashboard";
+import AdminBlogs from "./pages/admin/AdminBlogs";
 import AdminArticles from "./pages/admin/AdminArticles";
 import AdminCategories from "./pages/admin/AdminCategories";
+import AdminExtra from "./pages/admin/AdminExtra";
+import AdminSpecs from "./pages/admin/AdminSpecs";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
 const App = () => {
-  const [splashDone, setSplashDone] = useState(() => {
-    if (typeof window === 'undefined') return true;
+  // Start with splash visible; after mount we skip only for admin or returning visitors
+  const [splashDone, setSplashDone] = useState(false);
 
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
     const path = window.location.pathname || '';
-    const isAdminRoute = path.startsWith('/123admin');
-    if (isAdminRoute) {
-      return true;
+    if (path.startsWith('/123admin')) {
+      setSplashDone(true);
+      return;
     }
-
-    const hasSeenSplash = window.localStorage.getItem('fanaar_splash_seen') === '1';
-    return hasSeenSplash;
-  });
+    if (window.sessionStorage.getItem('fanaar_splash_seen') === '1') {
+      setSplashDone(true);
+    }
+  }, []);
 
   const handleSplashComplete = useCallback(() => {
     if (typeof window !== 'undefined') {
-      window.localStorage.setItem('fanaar_splash_seen', '1');
+      window.sessionStorage.setItem('fanaar_splash_seen', '1');
     }
     setSplashDone(true);
   }, []);
 
-  /* Splash screen on first load */
+  /* Splash screen on first load (client-side only) */
   if (!splashDone) {
     return <SplashScreen onComplete={handleSplashComplete} />;
   }
@@ -52,7 +57,7 @@ const App = () => {
         <Toaster />
         <Sonner />
 
-        <BrowserRouter>
+        <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
           <Routes>
             {/* Public pages — Explore is the landing page */}
             <Route path="/" element={<Explore />} />
@@ -68,8 +73,11 @@ const App = () => {
             {/* Admin pages */}
             <Route path="/123admin" element={<AdminLogin />} />
             <Route path="/123admin/dashboard" element={<AdminDashboard />} />
+            <Route path="/123admin/blogs" element={<AdminBlogs />} />
             <Route path="/123admin/articles" element={<AdminArticles />} />
             <Route path="/123admin/categories" element={<AdminCategories />} />
+            <Route path="/123admin/extra" element={<AdminExtra />} />
+            <Route path="/123admin/specs" element={<AdminSpecs />} />
 
             {/* 404 */}
             <Route path="*" element={<NotFound />} />

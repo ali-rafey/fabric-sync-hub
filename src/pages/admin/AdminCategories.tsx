@@ -3,7 +3,8 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { AdminLayout } from '@/components/admin/AdminLayout';
 import { Category } from '@/types/fabric';
-import { Plus, Pencil, Trash2, Upload, X, FolderOpen } from 'lucide-react';
+import { Plus, Pencil, Trash2, Upload, X, FolderOpen, FileText } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import './AdminArticles.css';
 
 export default function AdminCategories() {
@@ -117,6 +118,7 @@ export default function AdminCategories() {
               <tr>
                 <th>Image</th>
                 <th>Name</th>
+                <th>Articles</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -131,6 +133,11 @@ export default function AdminCategories() {
                     )}
                   </td>
                   <td style={{ textTransform: 'capitalize' }}>{cat.name}</td>
+                  <td>
+                    <Link to={`/123admin/articles?category=${encodeURIComponent(cat.name)}`} style={{ display: 'inline-flex', alignItems: 'center', gap: '0.25rem', color: 'hsl(30, 8%, 45%)', textDecoration: 'none', background: 'hsl(30, 10%, 96%)', padding: '0.5rem 0.75rem', borderRadius: '0.5rem', fontSize: '0.875rem' }}>
+                      <FileText size={16} /> View Articles
+                    </Link>
+                  </td>
                   <td>
                     <div className="article-actions">
                       <button className="btn-icon" onClick={() => startEdit(cat)}><Pencil /></button>
